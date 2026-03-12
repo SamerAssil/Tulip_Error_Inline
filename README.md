@@ -36,6 +36,12 @@ It Can't run on Delphi 10.4 or lower.
 
 ## 🛠️ Usage
 Once installed, the plugin works automatically. 
+- Make sure you select "Delphi (Language Server Protocol)" as Code insidght manager in Tools->Option->Editor->Language. Code Insight Tab
+<img width="761" height="564" alt="Screenshot 2026-03-12 at 18 26 12" src="https://github.com/user-attachments/assets/80d1b464-4aad-4ee8-ae1c-7bac3505bdc5" />
+
+- Make you select a proper error levels in "Error Insight" Tab in Tools->Option->Editor->Language.
+<img width="761" height="564" alt="Screenshot 2026-03-12 at 18 28 53" src="https://github.com/user-attachments/assets/f5d782d9-0c89-4b4c-9dad-d4412e998672" />
+
 
 ## 📄 License
 Distributed under the MIT License. See `LICENSE` for more information.
@@ -81,7 +87,13 @@ https://github.com/user-attachments/assets/a44aee10-84eb-4536-b6bb-8fa21c8d7005
 * قـريـبـاً *
 
 ## 🛠️ الاستخدام
-بمجرد التثبيت، تعمل الإضافة تلقائياً بشكل مباشر. 
+بمجرد التثبيت، تعمل الإضافة تلقائياً بشكل مباشر.
+- تاكد من هذا الخيار ( موضح في الصورة ) .
+<img width="761" height="564" alt="Screenshot 2026-03-12 at 18 26 12" src="https://github.com/user-attachments/assets/80d1b464-4aad-4ee8-ae1c-7bac3505bdc5" />
+
+- اختر المستوى المناسب حسب الحاجة . 
+<img width="761" height="564" alt="Screenshot 2026-03-12 at 18 28 53" src="https://github.com/user-attachments/assets/f5d782d9-0c89-4b4c-9dad-d4412e998672" />
+
 
 ## 📄 الترخيص
 موزعة بموجب ترخيص MIT. راجع ملف `LICENSE` لمزيد من المعلومات.
