@@ -17,7 +17,7 @@ https://github.com/user-attachments/assets/a44aee10-84eb-4536-b6bb-8fa21c8d7005
 
 ## ⚙️ Compatibility
 This plugin has been tested with:
-* RAD Studio / Delphi 13 Athens
+* Delphi 12.0, 13.0, 13.1
 It should work on Delphi 11, 12..
 It Can't run on Delphi 10.4 or lower.
 
@@ -69,8 +69,9 @@ https://github.com/user-attachments/assets/a44aee10-84eb-4536-b6bb-8fa21c8d7005
 
 ## ⚙️ التوافق
 تم اختبار هذه الإضافة مع:
-* RAD Studio / Delphi 13 Athens
-من المفترض أن تعمل بشكل جيد على Delphi 11 و Delphi 12.
+* Delphi 12.0, 13.0, 13.1
+ 
+من المفترض أن تعمل بشكل جيد على Delphi 11 .
 لا يمكن تشغيلها على Delphi 10.4 أو الإصدارات الأقدم.
 
 ## 🚀 التثبيت
