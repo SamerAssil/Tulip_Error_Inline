@@ -1,4 +1,4 @@
-# Tulip Error Inline for Delphi IDE
+﻿# Tulip Error Inline for Delphi IDE
 
 للغة العربية انقر [هنا](#arabic-version) او انتقل لما بعد الجزء الانكليزي
 
@@ -8,7 +8,7 @@
 https://github.com/user-attachments/assets/a44aee10-84eb-4536-b6bb-8fa21c8d7005
 
 
-<img width="770" height="573" alt="Screenshot 2026-03-11 at 03 32 20" src="https://github.com/user-attachments/assets/43035642-9167-483d-a0a5-dc4360e9462b" />
+<img width="766" height="569" alt="Screenshot 2026-03-22 at 11 43 55" src="https://github.com/user-attachments/assets/84ad4e1a-b707-4742-a71b-1696323ef818" />
 
 ## ✨ Features
 * **Inline Display:** Shows compiler errors, warnings, and hints directly at the end of the line in the active code editor.
@@ -17,7 +17,7 @@ https://github.com/user-attachments/assets/a44aee10-84eb-4536-b6bb-8fa21c8d7005
 
 ## ⚙️ Compatibility
 This plugin has been tested with:
-* RAD Studio / Delphi 13 Athens
+* Delphi 12.0, 13.0, 13.1
 It should work on Delphi 11, 12..
 It Can't run on Delphi 10.4 or lower.
 
@@ -32,10 +32,10 @@ It Can't run on Delphi 10.4 or lower.
 6. You should see a confirmation message that the package has been installed. Restarting the IDE is usually **not** required.
 
 ### Option 2: GetIt Package Manager
-* S O O N*
+<img width="914" height="660" alt="Screenshot 2026-03-18 at 23 24 42" src="https://github.com/user-attachments/assets/8cb54f9b-a2e9-47a3-b799-c63096c9717f" />
 
 ## 🛠️ Usage
-Once installed, the plugin works automatically. 
+Once installed, the plugin works automatically.
 - Make sure you select "Delphi (Language Server Protocol)" as Code insidght manager in Tools->Option->Editor->Language. Code Insight Tab
 <img width="761" height="564" alt="Screenshot 2026-03-12 at 18 26 12" src="https://github.com/user-attachments/assets/80d1b464-4aad-4ee8-ae1c-7bac3505bdc5" />
 
@@ -60,8 +60,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 https://github.com/user-attachments/assets/a44aee10-84eb-4536-b6bb-8fa21c8d7005
 
-<img width="770" height="573" alt="Screenshot 2026-03-11 at 03 32 20" src="https://github.com/user-attachments/assets/43035642-9167-483d-a0a5-dc4360e9462b" />
 
+<img width="766" height="569" alt="Screenshot 2026-03-22 at 11 43 55" src="https://github.com/user-attachments/assets/84ad4e1a-b707-4742-a71b-1696323ef818" />
 ## ✨ الميزات
 * **عرض مدمج (Inline Display):** يعرض أخطاء المترجم (Compiler errors)، والتحذيرات، والتلميحات مباشرة في نهاية السطر البرمجي داخل محرر الأكواد النشط.
 * **تجربة حديثة:** يوفر تجربة كتابة أكواد مشابهة للمحررات الحديثة مثل VS Code أو Visual Studio.
@@ -69,8 +69,9 @@ https://github.com/user-attachments/assets/a44aee10-84eb-4536-b6bb-8fa21c8d7005
 
 ## ⚙️ التوافق
 تم اختبار هذه الإضافة مع:
-* RAD Studio / Delphi 13 Athens
-من المفترض أن تعمل بشكل جيد على Delphi 11 و Delphi 12.
+* Delphi 12.0, 13.0, 13.1
+
+من المفترض أن تعمل بشكل جيد على Delphi 11 .
 لا يمكن تشغيلها على Delphi 10.4 أو الإصدارات الأقدم.
 
 ## 🚀 التثبيت
@@ -84,14 +85,16 @@ https://github.com/user-attachments/assets/a44aee10-84eb-4536-b6bb-8fa21c8d7005
 6. من المفترض أن تظهر لك رسالة تأكيد بنجاح تثبيت الحزمة. عادةً **لا** يتطلب الأمر إعادة تشغيل الـ IDE.
 
 ### الخيار الثاني: مدير الحزم GetIt Package Manager
-* قـريـبـاً *
+<img width="914" height="660" alt="Screenshot 2026-03-18 at 23 24 42" src="https://github.com/user-attachments/assets/8cb54f9b-a2e9-47a3-b799-c63096c9717f" />
 
-## 🛠️ الاستخدام
+
+## 🛠️ الاستخدام![Uploading Screenshot 2026-03-18 at 23.24.42.png…]()
+
 بمجرد التثبيت، تعمل الإضافة تلقائياً بشكل مباشر.
 - تاكد من هذا الخيار ( موضح في الصورة ) .
 <img width="761" height="564" alt="Screenshot 2026-03-12 at 18 26 12" src="https://github.com/user-attachments/assets/80d1b464-4aad-4ee8-ae1c-7bac3505bdc5" />
 
-- اختر المستوى المناسب حسب الحاجة . 
+- اختر المستوى المناسب حسب الحاجة .
 <img width="761" height="564" alt="Screenshot 2026-03-12 at 18 28 53" src="https://github.com/user-attachments/assets/f5d782d9-0c89-4b4c-9dad-d4412e998672" />
 
 
@@ -101,3 +104,4 @@ https://github.com/user-attachments/assets/a44aee10-84eb-4536-b6bb-8fa21c8d7005
 ## 👨‍💻 المبرمج
 **سامر أصيل (SAMER ASSIL)**
 * جيت هاب (GitHub): [@SamerAssil](https://github.com/SamerAssil)
+
