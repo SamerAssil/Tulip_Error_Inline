@@ -25,6 +25,11 @@ const
   ENABLED_WARNING = 'WarningEnabled';
   ENABLED_HINT = 'HintEnabled';
 
+
+  UPDATE_INTERVAL = 'UpdateInterval';
+  ERROR_ALIGN = 'ErrorAlign';
+  ERROR_INDENT = 'ErrorIndent';
+
 implementation
 
 end.

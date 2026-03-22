@@ -14,27 +14,15 @@ unit TulipErrorInline.main;
 interface
 
 uses
-  System.SysUtils,
-  System.Classes,
-  System.Types,
-  System.Win.Registry,
-  Vcl.Graphics,
-  Winapi.Windows,
-  vcl.controls,
-  System.StrUtils,
-  vcl.Forms,
-  vcl.dialogs,
-  System.Math,
-  System.Generics.Collections,
-  ToolsAPI,
-  ToolsAPI.Editor;
+  System.SysUtils, System.Classes, System.Types, System.Win.Registry, Vcl.Graphics, Winapi.Windows,
+  vcl.controls, System.StrUtils, vcl.Forms, vcl.dialogs, System.Math, System.Generics.Collections,
+  ToolsAPI, ToolsAPI.Editor;
 
 Type
 
   TErrorLineCache = record
     Text: string;
     Severity: Integer;
-    TextWidth: Integer;
   end;
 
   TTulipErrorInline = class(TNotifierObject, INTACodeEditorEvents)
@@ -189,16 +177,25 @@ begin
       EditorWidth := Context.EditControl.ClientWidth
     else
       EditorWidth := 4000;
+
     TargetRect := Rect;
 
     var errorLineWidth: integer;
     errorLineWidth := canvas.TextWidth(pchar(ErrorText)) + 20;
     TargetRect.width := errorLineWidth;
-    TargetRect.Left := EditorWidth - errorLineWidth;
+//    TargetRect.Left := EditorWidth - errorLineWidth;
     TargetRect.Right := EditorWidth;
     TargetRect.height := canvas.TextHeight(pchar(ErrorText));
 
-    TargetRect.left := FCodeLineWidth + 40;
+//    if ErrorAlign = eaLeft then
+    if ErrorAlign = eaLeft then
+      TargetRect.Left := FCodeLineWidth + Integer(ErrorIndent)
+      else
+        TargetRect.Right := EditorWidth - Integer(ErrorIndent);
+
+
+//    else
+//      TargetRect.Left := EditorWidth - errorLineWidth;
 
     canvas.font.color := msgtextColor;
     canvas.Brush.color := msgbgColor;
@@ -210,7 +207,13 @@ begin
 
     canvas.FillRect(TargetRect);
 
-    var DrawFlags := DT_NOPREFIX or DT_WORDBREAK or DT_EDITCONTROL or DT_left or DT_END_ELLIPSIS;
+    var DrawFlags := DT_NOPREFIX or DT_WORDBREAK or DT_EDITCONTROL or DT_END_ELLIPSIS;
+
+    if ErrorAlign = eaLeft then
+      DrawFlags := DrawFlags or DT_LEFT
+      else
+        DrawFlags := DrawFlags or DT_RIGHT ;
+
     Winapi.Windows.DrawText(Canvas.Handle, PChar(ErrorText), -1, TargetRect, DrawFlags);
     Canvas.Font.Assign(FEditorFont);
   end;
@@ -267,6 +270,10 @@ end;
 procedure TTulipErrorInline.PaintLine(const Rect: TRect; const Stage: TPaintLineStage; const BeforeEvent: Boolean;
     var AllowDefaultPainting: Boolean; const Context: INTACodeEditorPaintContext);
 begin
+
+  {if  (Stage = plsBackground) then
+    FCodeLineWidth := 0; }
+
   if (Stage = plsEndPaint) and not BeforeEvent then
     DrawInlineError(Rect, Context);
 end;
@@ -289,10 +296,14 @@ var
   ModuleErrors: IOTAModuleErrors;
   LCache: TErrorLineCache;
 begin
-  if (Buffer = nil) then
-    Exit;
+  if Buffer = nil then
+  begin
+     SetLength(FErrors, 0);
+     FLineCache.Clear;
+     Exit;
+  end;
 
-  if (Buffer.FileName <> FLastFile) or (GetTickCount - FLastUpdate > 300) then begin
+  if (Buffer.FileName <> FLastFile) or ((GetTickCount - FLastUpdate) > UpdateInterval ) then begin
     FLastFile := Buffer.FileName;
     FLastUpdate := GetTickCount;
     Module := Buffer.Module;
@@ -313,7 +324,10 @@ begin
       end
     end
     else
+    begin
       SetLength(FErrors, 0);
+      FLineCache.Clear;
+    end;
   end;
 
 end;
@@ -331,6 +345,10 @@ begin
   //Hint
   HintInfo.Color := $00FF8000;
   HintInfo.Enabled := true;
+
+  UpdateInterval := 1000;
+  ErrorAlign := eaLeft;
+  ErrorIndent := 40;
 
   Reg := TRegistry.Create(KEY_READ);
   try
@@ -352,6 +370,16 @@ begin
         HintInfo.Color := TColor(Reg.ReadInteger(FONT_COLOR_HINT));
       if Reg.ValueExists(ENABLED_HINT) then
         HintInfo.Enabled := Reg.ReadBool(ENABLED_HINT);
+
+      // update interval
+      if Reg.ValueExists(UPDATE_INTERVAL) then
+        UpdateInterval := Reg.ReadInteger(UPDATE_INTERVAL);
+
+      if Reg.ValueExists(ERROR_ALIGN) then
+        ErrorAlign := TErrorMessageAlign( Reg.ReadInteger(ERROR_ALIGN) );
+
+      if Reg.ValueExists(ERROR_INDENT) then
+        ErrorIndent := Reg.ReadInteger(ERROR_INDENT);
 
       Reg.CloseKey;
     end;
@@ -389,6 +417,7 @@ begin
 end;
 
 initialization
+
 finalization
   Unregister;
 end.

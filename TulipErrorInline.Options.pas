@@ -15,29 +15,28 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  System.win.Registry, ToolsAPI,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+  System.StrUtils, System.win.Registry, ToolsAPI,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.NumberBox, Vcl.ComCtrls,
+  Vcl.WinXCtrls;
 
 type
   TTulipErrorInlineFrame = class(TFrame)
     GroupBox1: TGroupBox;
     cbxErrorFontColor: TColorBox;
     cbErrorEnabled: TCheckBox;
-    label1: TLabel;
     GroupBox2: TGroupBox;
-    Label2: TLabel;
     cbxWarningFontColor: TColorBox;
     cbWarningEnabled: TCheckBox;
     GroupBox3: TGroupBox;
-    Label3: TLabel;
     cbxHintFontColor: TColorBox;
     cbHintEnabled: TCheckBox;
-    procedure cbxErrorFontColorChange(Sender: TObject);
-    procedure cbxWarningFontColorChange(Sender: TObject);
-    procedure cbxHintFontColorChange(Sender: TObject);
-    procedure cbErrorEnabledClick(Sender: TObject);
-    procedure cbWarningEnabledClick(Sender: TObject);
-    procedure cbHintEnabledClick(Sender: TObject);
+    cbErrorAlign: TComboBox;
+    edtUpdateInterval: TNumberBox;
+    Label5: TLabel;
+    Label6: TLabel;
+    edtIndent: TNumberBox;
+    GroupBox4: TGroupBox;
+    GroupBox5: TGroupBox;
   private
     { Private declarations }
   public
@@ -51,6 +50,8 @@ type
     Color: TColor;
     Enabled: Boolean;
   End;
+
+  TErrorMessageAlign = (eaLeft = 0, eaRight = 1);
 
   TTulipErrorInlineAddInOptions = class(TInterfacedObject, INTAAddInOptions)
   private
@@ -73,6 +74,10 @@ var
   WarningInfo: TInfoRec;
   HintInfo: TInfoRec;
 
+  UpdateInterval: Cardinal;
+  ErrorAlign: TErrorMessageAlign;
+  ErrorIndent: Cardinal;
+
 procedure Register;
 procedure UnRegister;
 
@@ -84,35 +89,6 @@ uses TulipErrorInline.consts;
 
 { TTulipErrorInlineFrame }
 
-procedure TTulipErrorInlineFrame.cbErrorEnabledClick(Sender: TObject);
-begin
-  ErrorInfo.enabled := cbErrorEnabled.checked;
-end;
-
-procedure TTulipErrorInlineFrame.cbHintEnabledClick(Sender: TObject);
-begin
-  HintInfo.enabled := cbHintEnabled.checked;
-end;
-
-procedure TTulipErrorInlineFrame.cbWarningEnabledClick(Sender: TObject);
-begin
-  WarningInfo.enabled := cbWarningEnabled.checked;
-end;
-
-procedure TTulipErrorInlineFrame.cbxErrorFontColorChange(Sender: TObject);
-begin
-  ErrorInfo.color := cbxErrorFontColor.Selected;
-end;
-
-procedure TTulipErrorInlineFrame.cbxHintFontColorChange(Sender: TObject);
-begin
-  HintInfo.Color := cbxHintFontColor.Selected;
-end;
-
-procedure TTulipErrorInlineFrame.cbxWarningFontColorChange(Sender: TObject);
-begin
-  WarningInfo.color := cbxWarningFontColor.Selected;
-end;
 
 procedure TTulipErrorInlineFrame.LoadSettings;
 var
@@ -127,6 +103,10 @@ begin
   //Hint
   HintInfo.Color := $00FF8000;
   HintInfo.Enabled := true;
+
+  UpdateInterval := 1000;
+  ErrorIndent := 40;
+  ErrorAlign := eaLeft;
 
   Reg := TRegistry.Create(KEY_READ);
   try
@@ -149,6 +129,16 @@ begin
       if Reg.ValueExists(ENABLED_HINT) then
         HintInfo.Enabled := Reg.ReadBool(ENABLED_HINT);
 
+      // update interval
+      if Reg.ValueExists(UPDATE_INTERVAL) then
+        UpdateInterval := Reg.ReadInteger(UPDATE_INTERVAL);
+
+      if Reg.ValueExists(ERROR_ALIGN) then
+        ErrorAlign := TErrorMessageAlign( Reg.ReadInteger(ERROR_ALIGN) );
+
+      if Reg.ValueExists(ERROR_INDENT) then
+        ErrorIndent := Reg.ReadInteger(ERROR_INDENT);
+
       Reg.CloseKey;
     end;
   finally
@@ -165,14 +155,38 @@ begin
     Reg.RootKey := HKEY_CURRENT_USER;
     if Reg.OpenKey(REG_KEY, True) then
     begin
+      ErrorInfo.color := cbxErrorFontColor.Selected;
       Reg.WriteInteger( FONT_COLOR_ERROR, Integer(ErrorInfo.Color));
+
+      ErrorInfo.enabled := cbErrorEnabled.checked;
       Reg.WriteBool( ENABLED_ERROR, ErrorInfo.Enabled);
 
+      WarningInfo.color := cbxWarningFontColor.Selected;
       Reg.WriteInteger(FONT_COLOR_WARNING, Integer(WarningInfo.Color));
+
+      WarningInfo.enabled := cbWarningEnabled.checked;
       Reg.WriteBool( ENABLED_WARNING, WarningInfo.Enabled);
 
+      HintInfo.color := cbxHintFontColor.Selected;
       Reg.WriteInteger(FONT_COLOR_HINT, Integer(HintInfo.Color));
+
+      HintInfo.enabled := cbHintEnabled.checked;
       Reg.WriteBool( ENABLED_HINT, HintInfo.Enabled);
+
+      UpdateInterval := Trunc(edtUpdateInterval.Value);
+      Reg.WriteInteger(UPDATE_INTERVAL, UpdateInterval);
+
+      if cbErrorAlign.ItemIndex <> -1 then
+        ErrorAlign := TErrorMessageAlign(cbErrorAlign.ItemIndex)
+        else
+          ErrorAlign := eaLeft;
+
+      Reg.WriteInteger(ERROR_ALIGN, cbErrorAlign.itemindex);
+
+      if edtIndent.Value < 0 then
+        edtIndent.Value := 0;
+      ErrorIndent := Trunc(edtIndent.Value);
+      Reg.WriteInteger(ERROR_INDENT, ErrorIndent);
 
       Reg.CloseKey;
     end;
@@ -181,11 +195,11 @@ begin
   end;
 end;
 
+
 { TTulipErrorInlineAddInOptions }
 
 procedure TTulipErrorInlineAddInOptions.DialogClosed(Accepted: Boolean);
 begin
-// If the user clicked "OK" (Accepted = True), tell our frame to save!
   if Accepted then
     FFrame.SaveSettings;
   FFrame := nil;
@@ -207,6 +221,9 @@ begin
     FFrame.cbxHintFontColor.Selected := HintInfo.Color;
     FFrame.cbHintEnabled.checked := HintInfo.enabled;
 
+    FFrame.edtUpdateInterval.Value := UpdateInterval;
+    FFrame.edtIndent.Value := ErrorIndent;
+    FFrame.cbErrorAlign.ItemIndex := Ord(ErrorAlign);
     end;
   finally
 
@@ -272,7 +289,8 @@ begin
 
 end;
 
-initialization;
+initialization
+
 finalization
   UnRegister;
 
