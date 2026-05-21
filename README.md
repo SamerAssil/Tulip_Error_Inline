@@ -4,6 +4,7 @@
 
 **Tulip Error Inline** is a lightweight Delphi IDE plugin that brings modern, inline error and warning displays directly into the code editor. Stop constantly looking down at the Messages view—see your compilation errors exactly where they happen!
 
+<a href="https://www.buymeacoffee.com/samerassil" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 https://github.com/user-attachments/assets/a44aee10-84eb-4536-b6bb-8fa21c8d7005
 
