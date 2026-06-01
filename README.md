@@ -6,10 +6,13 @@
 
 <a href="https://www.buymeacoffee.com/samerassil" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
-https://github.com/user-attachments/assets/a44aee10-84eb-4536-b6bb-8fa21c8d7005
 
 
-<img width="766" height="569" alt="Screenshot 2026-03-22 at 11 43 55" src="https://github.com/user-attachments/assets/84ad4e1a-b707-4742-a71b-1696323ef818" />
+https://github.com/user-attachments/assets/761ad6a3-c7a3-450f-af33-db22a8fad68d
+
+
+
+<img width="773" height="573" alt="Screenshot 2026-06-01 at 19 00 22" src="https://github.com/user-attachments/assets/4dbf21d7-7aa3-4ed9-b5d7-b421a8b3f457" />
 
 ## ✨ Features
 * **Inline Display:** Shows compiler errors, warnings, and hints directly at the end of the line in the active code editor.
@@ -59,10 +62,12 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 **Tulip Error Inline** هي إضافة (Plugin) خفيفة لبيئة تطوير دلفي (Delphi IDE)، تجلب لك تجربة عرض الأخطاء والتحذيرات الحديثة مباشرةً داخل محرر الأكواد (Inline). توقف عن النظر باستمرار إلى نافذة الرسائل (Messages view) في الأسفل — شاهد أخطاء الترجمة (Compilation errors) بالضبط في المكان الذي تحدث فيه!
 
-https://github.com/user-attachments/assets/a44aee10-84eb-4536-b6bb-8fa21c8d7005
+
+https://github.com/user-attachments/assets/761ad6a3-c7a3-450f-af33-db22a8fad68d
 
 
-<img width="766" height="569" alt="Screenshot 2026-03-22 at 11 43 55" src="https://github.com/user-attachments/assets/84ad4e1a-b707-4742-a71b-1696323ef818" />
+
+<img width="773" height="573" alt="Screenshot 2026-06-01 at 19 00 22" src="https://github.com/user-attachments/assets/4dbf21d7-7aa3-4ed9-b5d7-b421a8b3f457" />
 ## ✨ الميزات
 * **عرض مدمج (Inline Display):** يعرض أخطاء المترجم (Compiler errors)، والتحذيرات، والتلميحات مباشرة في نهاية السطر البرمجي داخل محرر الأكواد النشط.
 * **تجربة حديثة:** يوفر تجربة كتابة أكواد مشابهة للمحررات الحديثة مثل VS Code أو Visual Studio.
