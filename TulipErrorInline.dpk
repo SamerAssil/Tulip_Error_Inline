@@ -34,6 +34,7 @@ requires
 contains
   TulipErrorInline.main in 'TulipErrorInline.main.pas',
   TulipErrorInline.Options in 'TulipErrorInline.Options.pas' {TulipErrorInlineFrame: TFrame},
-  TulipErrorInline.consts in 'TulipErrorInline.consts.pas';
+  TulipErrorInline.consts in 'TulipErrorInline.consts.pas',
+  TulipErrorInline.common in 'TulipErrorInline.common.pas';
 
 end.

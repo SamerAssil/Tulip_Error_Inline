@@ -16,17 +16,14 @@ interface
 uses
   System.SysUtils, System.Classes, System.Types, System.Win.Registry, Vcl.Graphics, Winapi.Windows,
   vcl.controls, System.StrUtils, vcl.Forms, vcl.dialogs, System.Math, System.Generics.Collections,
-  ToolsAPI, ToolsAPI.Editor;
+  Vcl.GraphUtil,
+  ToolsAPI, ToolsAPI.Editor, TulipErrorInline.common;
 
 Type
 
-  TErrorLineCache = record
-    Text: string;
-    Severity: Integer;
-  end;
-
   TTulipErrorInline = class(TNotifierObject, INTACodeEditorEvents)
   private
+
     FErrors: TOTAErrors;
     FLastFile: string;
     FLastUpdate: Cardinal;
@@ -34,8 +31,7 @@ Type
     FCodeLineWidth: integer;
     FLineCache: TDictionary<Integer, TErrorLineCache>;
     procedure UpdateErrors(const Buffer: IOTAEditBuffer);
-    procedure DrawInlineError(const Rect: TRect; const Context: INTACodeEditorPaintContext);
-
+    procedure DrawInlineErrorNew(const Rect: TRect; const Context: INTACodeEditorPaintContext;  ErrorData: TErrorLineCache);
 
     procedure EditorScrolled(const Editor: TWinControl; const Direction: TCodeEditorScrollDirection);
     procedure EditorResized(const Editor: TWinControl);
@@ -65,6 +61,7 @@ Type
     destructor Destroy; override;
   end;
 
+
 procedure LoadSettings;
 procedure Register;
 procedure Unregister;
@@ -76,9 +73,9 @@ var
 
 implementation
 
-{ TTulipErrorInline }
+uses TulipErrorInline.consts;
 
-uses TulipErrorInline.consts, TulipErrorInline.Options;
+{ TTulipErrorInline }
 
 function TTulipErrorInline.AllowedEvents: TCodeEditorEvents;
 begin
@@ -96,10 +93,10 @@ begin
 end;
 
 procedure TTulipErrorInline.BeginPaint(const Editor: TWinControl; const ForceFullRepaint: Boolean);
-
 begin
 
 end;
+
 
 constructor TTulipErrorInline.Create;
 begin
@@ -116,62 +113,52 @@ begin
   inherited Destroy;
 end;
 
-procedure TTulipErrorInline.DrawInlineError(const Rect: TRect; const Context: INTACodeEditorPaintContext);
+
+procedure TTulipErrorInline.DrawInlineErrorNew(const Rect: TRect; const Context: INTACodeEditorPaintContext; ErrorData: TErrorLineCache);
 var
-  View: IOTAEditView;
-  ErrorText: string;
   Canvas: TCanvas;
   EditorWidth: Integer;
-  Severity: Integer;
   TargetRect: TRect;
   msgtextColor: Tcolor;
   msgbgColor: Tcolor;
-  ErrorData: TErrorLineCache;
-
 begin
+    if not FLineCache.TryGetValue(Context.EditorLineNum, ErrorData) then
+      Exit;
 
-  View := Context.EditView;
-  if (View = nil) or (View.Buffer = nil) then
-    Exit;
-
-  UpdateErrors(View.Buffer);
-
-  if Length(FErrors) = 0 then
-    Exit;
-
-  if not FLineCache.TryGetValue(Context.EditorLineNum, ErrorData) then
-    Exit;
-
-  ErrorText := ErrorData.Text;
-  Severity := ErrorData.Severity;
-
-
-  case Severity of
-  1: if not ErrorInfo.Enabled then exit;
-  2: if not WarningInfo.Enabled then exit;
-  3: if not HintInfo.Enabled then exit;
-  else
+  if ErrorData.Text.IsEmpty then
     exit;
+
+//  ErrorText := ErrorData.Text;
+//  Severity := ErrorData.Severity;
+
+  case ErrorData.Severity of
+    1: if not ErrorInfo.Enabled then exit;
+    2: if not WarningInfo.Enabled then exit;
+    3: if not HintInfo.Enabled then exit;
+  else
+   exit;
   end;
 
-
-  if ErrorText <> '' then begin
-    Canvas := Context.Canvas;
-  Canvas.Brush.Style := bsClear;
-  FEditorFont.assign(Canvas.Font);
-
-    msgbgColor := clNone;
-    Canvas.Font.Style := [fsItalic, TFontStyle.fsBold];
-    case Severity of
-      1:  msgtextColor := ErrorInfo.color; //clRed; //clMaroon;
-      2:  msgtextColor := WarningInfo.color;// $004080FF; // Warning (Orange)
-      3:  msgtextColor := HintInfo.color; //$00FF8000; // Hint (Blue)
-      else
-        begin
-          msgtextColor := clBlack;
-          msgbgColor := clblack;
+  case ErrorData.Severity of
+    1:  begin
+          msgtextColor := ErrorInfo.color;
+          msgbgColor := ErrorBG;
+          end;
+    2:  begin
+          msgtextColor := WarningInfo.color;
+          msgbgColor := WarningBG;
+          end;
+    3:  begin
+          msgtextColor := HintInfo.color;
+          msgbgColor := HintBG;
         end;
+    else
+          msgtextColor := clblack;
+          msgbgColor := clblack;
     end;
+
+
+    Canvas := Context.Canvas;
 
     if Assigned(Context.EditControl) then
       EditorWidth := Context.EditControl.ClientWidth
@@ -179,27 +166,13 @@ begin
       EditorWidth := 4000;
 
     TargetRect := Rect;
-
-    var errorLineWidth: integer;
-    errorLineWidth := canvas.TextWidth(pchar(ErrorText)) + 20;
-    TargetRect.width := errorLineWidth;
-    TargetRect.Right := EditorWidth;
-    TargetRect.height := canvas.TextHeight(pchar(ErrorText));
     TargetRect.Left := FCodeLineWidth + Integer(ErrorIndent);
+    TargetRect.width := canvas.TextWidth(pchar(ErrorData.Text)) + 20;
+    TargetRect.Right := TargetRect.width + TargetRect.Left ;
+    TargetRect.height := canvas.TextHeight(pchar(ErrorData.Text)) + 2;
 
     if ErrorAlign = eaRight then
         TargetRect.Right := EditorWidth - Integer(ErrorIndent);
-
-
-    canvas.font.color := msgtextColor;
-    canvas.Brush.color := msgbgColor;
-
-    if msgbgColor = clNone then
-      Canvas.Brush.Style := bsClear
-    else
-      Canvas.Brush.Style := bsSolid;
-
-    canvas.FillRect(TargetRect);
 
     var DrawFlags := DT_NOPREFIX or DT_WORDBREAK or DT_EDITCONTROL or DT_END_ELLIPSIS;
 
@@ -211,10 +184,29 @@ begin
     if TargetRect.Width > EditorWidth - FCodeLineWidth then
       DrawFlags := DrawFlags or DT_LEFT;
 
-    Winapi.Windows.DrawText(Canvas.Handle, PChar(ErrorText), -1, TargetRect, DrawFlags);
-    Canvas.Font.Assign(FEditorFont);
+
+     // CalculateErrorDrawingColors(msgtextColor, Context.Canvas.Brush.Color, msgbgColor, msgtextColor);
+     // msgbgcolor = ide background color
+     msgbgColor := Brighten(msgtextColor, Canvas.Brush.Color);
+     FEditorFont.assign(Canvas.Font);
+
+      canvas.font.color := msgtextColor;
+      canvas.Brush.color := msgbgColor;// msgbgColor;
+      canvas.Brush.Style := bsSolid;
+      canvas.pen.Color := msgtextColor;
+      canvas.pen.Width := 1;
+      canvas.Pen.Style := psSolid;
+      canvas.RoundRect(TargetRect, 12,12);
+
+
+      TargetRect.Left := TargetRect.Left + 10;
+
+      canvas.Brush.Style := bsClear;
+    Winapi.Windows.DrawText(Canvas.Handle, PChar(ErrorData.Text), -1, TargetRect ,  DrawFlags);
+   // Canvas.Font.Assign(FEditorFont);
   end;
-end;
+
+
 
 procedure TTulipErrorInline.EditorElided(const Editor: TWinControl; const LogicalLineNum: Integer);
 begin
@@ -266,13 +258,27 @@ end;
 
 procedure TTulipErrorInline.PaintLine(const Rect: TRect; const Stage: TPaintLineStage; const BeforeEvent: Boolean;
     var AllowDefaultPainting: Boolean; const Context: INTACodeEditorPaintContext);
+var
+    View: IOTAEditView;
+    ErrorData: TErrorLineCache;
 begin
-
   {if  (Stage = plsBackground) then
     FCodeLineWidth := 0; }
-
   if (Stage = plsEndPaint) and not BeforeEvent then
-    DrawInlineError(Rect, Context);
+   // DrawInlineError(Rect, Context);
+  begin
+    View := Context.EditView;
+    if (View = nil) or (View.Buffer = nil) then
+      Exit;
+
+    UpdateErrors(View.Buffer);
+
+    if Length(FErrors) = 0 then
+      Exit;
+
+
+    DrawInlineErrorNew(Rect, Context, errorData)
+  end;
 end;
 
 procedure TTulipErrorInline.PaintText(const Rect: TRect; const ColNum: SmallInt; const Text: string;
@@ -308,14 +314,17 @@ begin
       FErrors := ModuleErrors.GetErrors(Buffer.FileName);
       FLineCache.Clear;
       for var I := Low(FErrors) to High(FErrors) do begin
-        if FLineCache.TryGetValue(FErrors[I].Start.Line, LCache) then begin
-          LCache.Text := LCache.Text + ' • ' + FErrors[I].Text.Trim;
-          if FErrors[I].Severity < LCache.Severity then
+        begin
+          if FLineCache.TryGetValue(FErrors[I].Start.Line, LCache) then begin
+            LCache.Text := LCache.Text + ' • ' + FErrors[I].Text.Trim;
+            if FErrors[I].Severity < LCache.Severity then
+              LCache.Severity := FErrors[I].Severity;
+          end
+          else begin
+            LCache.Text := FErrors[I].Text.Trim;
             LCache.Severity := FErrors[I].Severity;
-        end
-        else begin
-          LCache.Text := FErrors[I].Text.Trim;
-          LCache.Severity := FErrors[I].Severity;
+          end;
+          LCache.index := I;
         end;
         FLineCache.AddOrSetValue(FErrors[I].Start.Line, LCache);
       end
@@ -379,10 +388,13 @@ begin
         ErrorIndent := Reg.ReadInteger(ERROR_INDENT);
 
       Reg.CloseKey;
+
     end;
   finally
     Reg.Free;
   end;
+
+
 end;
 
 

@@ -17,17 +17,15 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   System.StrUtils, System.win.Registry, ToolsAPI,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.NumberBox, Vcl.ComCtrls,
-  Vcl.WinXCtrls;
+  Vcl.WinXCtrls, TulipErrorInline.common;
 
 type
   TTulipErrorInlineFrame = class(TFrame)
     GroupBox1: TGroupBox;
     cbxErrorFontColor: TColorBox;
     cbErrorEnabled: TCheckBox;
-    GroupBox2: TGroupBox;
     cbxWarningFontColor: TColorBox;
     cbWarningEnabled: TCheckBox;
-    GroupBox3: TGroupBox;
     cbxHintFontColor: TColorBox;
     cbHintEnabled: TCheckBox;
     cbErrorAlign: TComboBox;
@@ -46,12 +44,8 @@ type
 
 
 type
-  TInfoRec = Record
-    Color: TColor;
-    Enabled: Boolean;
-  End;
 
-  TErrorMessageAlign = (eaLeft = 0, eaRight = 1);
+
 
   TTulipErrorInlineAddInOptions = class(TInterfacedObject, INTAAddInOptions)
   private
@@ -70,13 +64,8 @@ type
 var
   ErrorInlineOptionsIndex: INTAAddInOptions = nil;
 
-  ErrorInfo: TInfoRec;
-  WarningInfo: TInfoRec;
-  HintInfo: TInfoRec;
 
-  UpdateInterval: Cardinal;
-  ErrorAlign: TErrorMessageAlign;
-  ErrorIndent: Cardinal;
+
 
 procedure Register;
 procedure UnRegister;
@@ -140,6 +129,7 @@ begin
         ErrorIndent := Reg.ReadInteger(ERROR_INDENT);
 
       Reg.CloseKey;
+
     end;
   finally
     Reg.Free;
@@ -189,6 +179,7 @@ begin
       Reg.WriteInteger(ERROR_INDENT, ErrorIndent);
 
       Reg.CloseKey;
+
     end;
   finally
     Reg.Free;

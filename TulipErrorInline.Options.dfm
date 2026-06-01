@@ -1,18 +1,18 @@
 object TulipErrorInlineFrame: TTulipErrorInlineFrame
   Left = 0
   Top = 0
-  Width = 409
-  Height = 363
+  Width = 424
+  Height = 281
   TabOrder = 0
   object GroupBox1: TGroupBox
     Left = 16
     Top = 16
     Width = 376
-    Height = 65
+    Height = 121
     Caption = 'Error'
     TabOrder = 0
     object cbxErrorFontColor: TColorBox
-      Left = 191
+      Left = 159
       Top = 26
       Width = 145
       Height = 22
@@ -23,80 +23,64 @@ object TulipErrorInlineFrame: TTulipErrorInlineFrame
       Top = 29
       Width = 73
       Height = 17
-      Caption = 'Enable'
+      Caption = 'Error'
       TabOrder = 1
-    end
-  end
-  object GroupBox2: TGroupBox
-    Left = 16
-    Top = 87
-    Width = 376
-    Height = 65
-    Caption = 'Warning'
-    TabOrder = 1
-    object cbxWarningFontColor: TColorBox
-      Left = 191
-      Top = 26
-      Width = 145
-      Height = 22
-      TabOrder = 0
     end
     object cbWarningEnabled: TCheckBox
       Left = 48
-      Top = 29
+      Top = 57
       Width = 73
       Height = 17
-      Caption = 'Enable'
-      TabOrder = 1
+      Caption = 'Warning'
+      TabOrder = 2
     end
-  end
-  object GroupBox3: TGroupBox
-    Left = 16
-    Top = 158
-    Width = 376
-    Height = 65
-    Caption = 'Hint'
-    TabOrder = 2
-    object cbxHintFontColor: TColorBox
-      Left = 191
-      Top = 26
+    object cbxWarningFontColor: TColorBox
+      Left = 159
+      Top = 54
       Width = 145
       Height = 22
-      TabOrder = 0
+      TabOrder = 3
     end
     object cbHintEnabled: TCheckBox
       Left = 48
-      Top = 29
+      Top = 85
       Width = 73
       Height = 17
-      Caption = 'Enable'
-      TabOrder = 1
+      Caption = 'Hint'
+      TabOrder = 4
+    end
+    object cbxHintFontColor: TColorBox
+      Left = 159
+      Top = 82
+      Width = 145
+      Height = 22
+      TabOrder = 5
     end
   end
   object GroupBox4: TGroupBox
     Left = 207
-    Top = 229
+    Top = 143
     Width = 185
-    Height = 92
+    Height = 106
     Caption = 'Alignment'
-    TabOrder = 3
+    TabOrder = 1
     object Label5: TLabel
       Left = 19
-      Top = 27
+      Top = 43
       Width = 28
       Height = 15
       Caption = 'Align'
     end
     object Label6: TLabel
       Left = 19
-      Top = 56
+      Top = 72
       Width = 34
       Height = 15
       Caption = 'Indent'
     end
     object cbErrorAlign: TComboBox
       Left = 72
-      Top = 24
+      Top = 40
       Width = 97
       Height = 23
       ItemIndex = 0
@@ -108,7 +92,7 @@ object TulipErrorInlineFrame: TTulipErrorInlineFrame
     end
     object edtIndent: TNumberBox
       Left = 72
-      Top = 53
+      Top = 69
       Width = 97
       Height = 23
       TabOrder = 1
@@ -117,14 +101,14 @@ object TulipErrorInlineFrame: TTulipErrorInlineFrame
   end
   object GroupBox5: TGroupBox
     Left = 16
-    Top = 229
+    Top = 143
     Width = 185
-    Height = 92
+    Height = 106
     Caption = 'Update Interval (ms)'
-    TabOrder = 4
+    TabOrder = 2
     object edtUpdateInterval: TNumberBox
       Left = 23
-      Top = 24
+      Top = 40
       Width = 146
       Height = 23
       TabOrder = 0
