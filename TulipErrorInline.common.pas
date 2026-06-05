@@ -48,7 +48,7 @@ begin
   b := ColorToRGB(aBackColor);
   ColorRGBToHLS(b, bH, bL, bS);
 
-  if l > bl then
+  if l < bl then
     NewL := 225
   else
     NewL := 40;

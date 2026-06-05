@@ -187,11 +187,15 @@ begin
 
      // CalculateErrorDrawingColors(msgtextColor, Context.Canvas.Brush.Color, msgbgColor, msgtextColor);
      // msgbgcolor = ide background color
-     msgbgColor := Brighten(msgtextColor, Canvas.Brush.Color);
-     FEditorFont.assign(Canvas.Font);
+     var EditorServices: INTACodeEditorServices;
+     if Supports(BorlandIDEServices, INTACodeEditorServices, EditorServices) then
+     begin
+//!       msgbgColor := Brighten(msgtextColor, EditorServices.Options.BackgroundColor[atComment]);
+       msgbgColor := {Brighten(msgtextColor,} EditorServices.Options.BackgroundColor[atComment]{);};
+      FEditorFont.assign(Canvas.Font);
 
       canvas.font.color := msgtextColor;
-      canvas.Brush.color := msgbgColor;// msgbgColor;
+      canvas.Brush.color := msgtextColor;// msgbgColor;
       canvas.Brush.Style := bsSolid;
       canvas.pen.Color := msgtextColor;
       canvas.pen.Width := 1;
@@ -202,8 +206,9 @@ begin
       TargetRect.Left := TargetRect.Left + 10;
 
       canvas.Brush.Style := bsClear;
-    Winapi.Windows.DrawText(Canvas.Handle, PChar(ErrorData.Text), -1, TargetRect ,  DrawFlags);
-   // Canvas.Font.Assign(FEditorFont);
+      Winapi.Windows.DrawText(Canvas.Handle, PChar(ErrorData.Text), -1, TargetRect ,  DrawFlags);
+    // Canvas.Font.Assign(FEditorFont);
+    end;
   end;
 
 
