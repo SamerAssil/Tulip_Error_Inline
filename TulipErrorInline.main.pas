@@ -190,12 +190,12 @@ begin
      var EditorServices: INTACodeEditorServices;
      if Supports(BorlandIDEServices, INTACodeEditorServices, EditorServices) then
      begin
-//!       msgbgColor := Brighten(msgtextColor, EditorServices.Options.BackgroundColor[atComment]);
-       msgbgColor := {Brighten(msgtextColor,} EditorServices.Options.BackgroundColor[atComment]{);};
+       msgbgColor := Brighten(msgtextColor, EditorServices.Options.BackgroundColor[atComment]);
+
       FEditorFont.assign(Canvas.Font);
 
       canvas.font.color := msgtextColor;
-      canvas.Brush.color := msgtextColor;// msgbgColor;
+      canvas.Brush.color := msgbgColor;// msgbgColor;
       canvas.Brush.Style := bsSolid;
       canvas.pen.Color := msgtextColor;
       canvas.pen.Width := 1;
