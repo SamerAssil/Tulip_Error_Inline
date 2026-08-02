@@ -21,9 +21,7 @@ https://github.com/user-attachments/assets/761ad6a3-c7a3-450f-af33-db22a8fad68d
 
 ## ⚙️ Compatibility
 This plugin has been tested with:
-* Delphi 12.0, 13.0, 13.1
-It should work on Delphi 11, 12..
-It Can't run on Delphi 10.4 or lower.
+* Delphi 12.0, 13.0, 13.1 and up
 
 ## 🚀 Installation
 
