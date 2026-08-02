@@ -142,19 +142,19 @@ begin
   case ErrorData.Severity of
     1:  begin
           msgtextColor := ErrorInfo.color;
-          msgbgColor := ErrorBG;
-          end;
+      //-    msgbgColor := ErrorBG;
+        end;
     2:  begin
           msgtextColor := WarningInfo.color;
-          msgbgColor := WarningBG;
-          end;
+      //-     msgbgColor := WarningBG;
+        end;
     3:  begin
           msgtextColor := HintInfo.color;
-          msgbgColor := HintBG;
+      //-    msgbgColor := HintBG;
         end;
     else
           msgtextColor := clblack;
-          msgbgColor := clblack;
+      //-    msgbgColor := clblack;
     end;
 
 
