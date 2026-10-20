@@ -26,6 +26,7 @@ package TulipErrorInline;
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
 {$IMPLICITBUILD ON}
+{$DESIGNONLY}
 
 requires
   rtl,
