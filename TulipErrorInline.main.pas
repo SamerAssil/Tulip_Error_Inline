@@ -27,6 +27,7 @@ type
     FLastFile: string;
     FLastUpdate: UInt64;
     FCodeLineWidth: Integer;
+    FPaintErrorCount: Integer;
     FLineCache: TDictionary<Integer, TErrorLineCache>;
     procedure UpdateErrors(const Buffer: IOTAEditBuffer);
     procedure DrawInlineErrorNew(const Rect: TRect; const Context: INTACodeEditorPaintContext);
@@ -266,21 +267,29 @@ procedure TTulipErrorInline.PaintLine(const Rect: TRect; const Stage: TPaintLine
 var
   View: IOTAEditView;
 begin
-  if Stage = plsBackground then
-    FCodeLineWidth := Rect.Left;
+  if FPaintErrorCount > 10 then
+    Exit;
 
-  if (Stage = plsEndPaint) and not BeforeEvent then
-  begin
-    View := Context.EditView;
-    if (View = nil) or (View.Buffer = nil) then
-      Exit;
+  try
+    if Stage = plsBackground then
+      FCodeLineWidth := Rect.Left;
 
-    UpdateErrors(View.Buffer);
+    if (Stage = plsEndPaint) and not BeforeEvent then
+    begin
+      View := Context.EditView;
+      if (View = nil) or (View.Buffer = nil) then
+        Exit;
 
-    if Length(FErrors) = 0 then
-      Exit;
+      UpdateErrors(View.Buffer);
 
-    DrawInlineErrorNew(Rect, Context);
+      if Length(FErrors) = 0 then
+        Exit;
+
+      DrawInlineErrorNew(Rect, Context);
+      FPaintErrorCount := 0;
+    end;
+  except
+    Inc(FPaintErrorCount);
   end;
 end;
 
