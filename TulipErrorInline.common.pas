@@ -82,7 +82,13 @@ begin
         UpdateInterval := EnsureRange(Reg.ReadInteger(UPDATE_INTERVAL), 100, 60000);
 
       if Reg.ValueExists(ERROR_ALIGN) then
-        ErrorAlign := TErrorMessageAlign(Reg.ReadInteger(ERROR_ALIGN));
+      begin
+        var AlignVal := Reg.ReadInteger(ERROR_ALIGN);
+        if (AlignVal >= Ord(Low(TErrorMessageAlign))) and (AlignVal <= Ord(High(TErrorMessageAlign))) then
+          ErrorAlign := TErrorMessageAlign(AlignVal)
+        else
+          ErrorAlign := eaLeft;
+      end;
 
       if Reg.ValueExists(ERROR_INDENT) then
         ErrorIndent := EnsureRange(Reg.ReadInteger(ERROR_INDENT), 0, 500);
@@ -114,26 +120,5 @@ begin
 
   Result := ColorHLSToRGB(H, NewL, S);
 end;
-
-//
-//procedure DoBest(var aFront, aBack: TColor);
-//var
-//  H, S: Word;
-//  f, b, tmp: TColor;
-//  fL, bL: Word;
-//begin
-//  f := ColorToRGB(aFront);
-//  b := ColorToRGB(aBack);
-//  ColorRGBToHLS(f, H, fL, S);
-//  ColorRGBToHLS(b, H, bL, S);
-//
-//  tmp := aFront;
-//  if fL < bL then
-//    begin
-//    aFront := aBack;
-//    aBack := tmp;
-//    end;
-//
-//end;
 
 end.

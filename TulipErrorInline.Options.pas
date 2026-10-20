@@ -114,12 +114,13 @@ begin
       UpdateInterval := EnsureRange(Trunc(edtUpdateInterval.Value), 100, 60000);
       Reg.WriteInteger(UPDATE_INTERVAL, UpdateInterval);
 
-      if cbErrorAlign.ItemIndex <> -1 then
+      if (cbErrorAlign.ItemIndex >= Ord(Low(TErrorMessageAlign))) and
+         (cbErrorAlign.ItemIndex <= Ord(High(TErrorMessageAlign))) then
         ErrorAlign := TErrorMessageAlign(cbErrorAlign.ItemIndex)
-        else
-          ErrorAlign := eaLeft;
+      else
+        ErrorAlign := eaLeft;
 
-      Reg.WriteInteger(ERROR_ALIGN, cbErrorAlign.itemindex);
+      Reg.WriteInteger(ERROR_ALIGN, Ord(ErrorAlign));
 
       ErrorIndent := EnsureRange(Trunc(edtIndent.Value), 0, 500);
       Reg.WriteInteger(ERROR_INDENT, ErrorIndent);
@@ -144,26 +145,22 @@ end;
 
 procedure TTulipErrorInlineAddInOptions.FrameCreated(AFrame: TCustomFrame);
 begin
-  FFrame := TTulipErrorInlineFrame(AFrame);
-  try
-  if Assigned(FFrame) then
-    begin
+  if AFrame is TTulipErrorInlineFrame then
+  begin
+    FFrame := TTulipErrorInlineFrame(AFrame);
     FFrame.LoadSettings;
     FFrame.cbxErrorFontColor.Selected := ErrorInfo.Color;
-    FFrame.cbErrorEnabled.checked := ErrorInfo.enabled;
+    FFrame.cbErrorEnabled.Checked := ErrorInfo.Enabled;
 
     FFrame.cbxWarningFontColor.Selected := WarningInfo.Color;
-    FFrame.cbWarningEnabled.checked := WarningInfo.enabled;
+    FFrame.cbWarningEnabled.Checked := WarningInfo.Enabled;
 
     FFrame.cbxHintFontColor.Selected := HintInfo.Color;
-    FFrame.cbHintEnabled.checked := HintInfo.enabled;
+    FFrame.cbHintEnabled.Checked := HintInfo.Enabled;
 
     FFrame.edtUpdateInterval.Value := UpdateInterval;
     FFrame.edtIndent.Value := ErrorIndent;
     FFrame.cbErrorAlign.ItemIndex := Ord(ErrorAlign);
-    end;
-  finally
-
   end;
 end;
 
