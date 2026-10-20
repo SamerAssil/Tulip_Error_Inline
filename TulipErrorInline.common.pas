@@ -8,19 +8,16 @@ Type
   TErrorMessageAlign = (eaLeft = 0, eaRight = 1);
 
   TErrorLineCache = record
-    index: integer;
     Text: string;
     Severity: Integer;
   end;
 
   TInfoRec = Record
     Color: TColor;
-    Background: TColor;
     Enabled: Boolean;
   End;
 
 var
-  ErrorBG, WarningBG, HintBG: TColor;
   ErrorInfo: TInfoRec;
   WarningInfo: TInfoRec;
   HintInfo: TInfoRec;

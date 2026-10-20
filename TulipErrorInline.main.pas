@@ -353,7 +353,6 @@ begin
           LCache.Text := FErrors[I].Text.Trim;
           LCache.Severity := FErrors[I].Severity;
         end;
-        LCache.index := I;
         FLineCache.AddOrSetValue(FErrors[I].Start.Line, LCache);
       end;
     end
