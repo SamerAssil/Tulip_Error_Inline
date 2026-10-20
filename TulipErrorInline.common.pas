@@ -2,7 +2,7 @@ unit TulipErrorInline.common;
 
 interface
 uses
-  System.SysUtils, System.Win.Registry, System.UITypes, vcl.GraphUtil, Vcl.Graphics, Winapi.Windows, Vcl.Themes, ToolsAPI;
+  System.SysUtils, System.Win.Registry, System.UITypes, System.Math, vcl.GraphUtil, Vcl.Graphics, Winapi.Windows, Vcl.Themes, ToolsAPI;
 Type
 
   TErrorMessageAlign = (eaLeft = 0, eaRight = 1);
@@ -79,13 +79,13 @@ begin
 
       // update interval
       if Reg.ValueExists(UPDATE_INTERVAL) then
-        UpdateInterval := Reg.ReadInteger(UPDATE_INTERVAL);
+        UpdateInterval := EnsureRange(Reg.ReadInteger(UPDATE_INTERVAL), 100, 60000);
 
       if Reg.ValueExists(ERROR_ALIGN) then
         ErrorAlign := TErrorMessageAlign(Reg.ReadInteger(ERROR_ALIGN));
 
       if Reg.ValueExists(ERROR_INDENT) then
-        ErrorIndent := Reg.ReadInteger(ERROR_INDENT);
+        ErrorIndent := EnsureRange(Reg.ReadInteger(ERROR_INDENT), 0, 500);
 
       Reg.CloseKey;
     end;

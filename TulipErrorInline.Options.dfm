@@ -98,6 +98,7 @@ object TulipErrorInlineFrame: TTulipErrorInlineFrame
       Top = 69
       Width = 97
       Height = 23
+      MaxValue = 500.000000000000000000
       TabOrder = 1
       Value = 40.000000000000000000
     end
@@ -114,6 +115,8 @@ object TulipErrorInlineFrame: TTulipErrorInlineFrame
       Top = 40
       Width = 146
       Height = 23
+      MinValue = 100.000000000000000000
+      MaxValue = 60000.000000000000000000
       TabOrder = 0
       Value = 1000.000000000000000000
     end

@@ -15,7 +15,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  System.StrUtils, System.win.Registry, ToolsAPI,
+  System.StrUtils, System.win.Registry, System.Math, ToolsAPI,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.NumberBox, Vcl.ComCtrls,
   Vcl.WinXCtrls, TulipErrorInline.common;
 
@@ -111,7 +111,7 @@ begin
       HintInfo.enabled := cbHintEnabled.checked;
       Reg.WriteBool( ENABLED_HINT, HintInfo.Enabled);
 
-      UpdateInterval := Trunc(edtUpdateInterval.Value);
+      UpdateInterval := EnsureRange(Trunc(edtUpdateInterval.Value), 100, 60000);
       Reg.WriteInteger(UPDATE_INTERVAL, UpdateInterval);
 
       if cbErrorAlign.ItemIndex <> -1 then
@@ -121,9 +121,7 @@ begin
 
       Reg.WriteInteger(ERROR_ALIGN, cbErrorAlign.itemindex);
 
-      if edtIndent.Value < 0 then
-        edtIndent.Value := 0;
-      ErrorIndent := Trunc(edtIndent.Value);
+      ErrorIndent := EnsureRange(Trunc(edtIndent.Value), 0, 500);
       Reg.WriteInteger(ERROR_INDENT, ErrorIndent);
 
       Reg.CloseKey;
