@@ -28,6 +28,8 @@ type
     FLastUpdate: UInt64;
     FCodeLineWidth: Integer;
     FPaintErrorCount: Integer;
+    FEditorServices: INTACodeEditorServices;
+    FEditorBgColor: TColor;
     FLineCache: TDictionary<Integer, TErrorLineCache>;
     procedure UpdateErrors(const Buffer: IOTAEditBuffer);
     procedure DrawInlineErrorNew(const Rect: TRect; const Context: INTACodeEditorPaintContext);
@@ -100,10 +102,16 @@ begin
   inherited Create;
   LoadSettings;
   FLineCache := TDictionary<Integer, TErrorLineCache>.Create;
+  if Supports(BorlandIDEServices, INTACodeEditorServices, FEditorServices) and
+     Assigned(FEditorServices.Options) then
+    FEditorBgColor := FEditorServices.Options.BackgroundColor[atWhiteSpace]
+  else
+    FEditorBgColor := clWhite;
 end;
 
 destructor TTulipErrorInline.Destroy;
 begin
+  FEditorServices := nil;
   FLineCache.Free;
   inherited Destroy;
 end;
@@ -120,7 +128,6 @@ var
   TextW, TextH: Integer;
   SavedDC: Integer;
   DrawFlags: Cardinal;
-  EditorServices: INTACodeEditorServices;
 begin
   if not FLineCache.TryGetValue(Context.EditorLineNum, ErrorData) then
     Exit;
@@ -153,10 +160,7 @@ begin
   else
     EditorWidth := 4000;
 
-  if not Supports(BorlandIDEServices, INTACodeEditorServices, EditorServices) then
-    Exit;
-
-  msgbgColor := Brighten(msgtextColor, EditorServices.Options.BackgroundColor[atWhiteSpace]);
+  msgbgColor := Brighten(msgtextColor, FEditorBgColor);
 
   SavedDC := SaveDC(Canvas.Handle);
   try
@@ -325,6 +329,12 @@ begin
   begin
     FLastFile := Buffer.FileName;
     FLastUpdate := CurrentTick;
+
+    if FEditorServices = nil then
+      Supports(BorlandIDEServices, INTACodeEditorServices, FEditorServices);
+    if (FEditorServices <> nil) and Assigned(FEditorServices.Options) then
+      FEditorBgColor := FEditorServices.Options.BackgroundColor[atWhiteSpace];
+
     Module := Buffer.Module;
     if (Module <> nil) and Supports(Module, IOTAModuleErrors, ModuleErrors) then
     begin
