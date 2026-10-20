@@ -16,6 +16,7 @@ object TulipErrorInlineFrame: TTulipErrorInlineFrame
       Top = 26
       Width = 145
       Height = 22
+      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor]
       TabOrder = 0
     end
     object cbErrorEnabled: TCheckBox
@@ -39,6 +40,7 @@ object TulipErrorInlineFrame: TTulipErrorInlineFrame
       Top = 54
       Width = 145
       Height = 22
+      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor]
       TabOrder = 3
     end
     object cbHintEnabled: TCheckBox
@@ -54,6 +56,7 @@ object TulipErrorInlineFrame: TTulipErrorInlineFrame
       Top = 82
       Width = 145
       Height = 22
+      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor]
       TabOrder = 5
     end
   end
