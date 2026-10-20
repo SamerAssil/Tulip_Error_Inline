@@ -129,6 +129,8 @@ var
   SavedDC: Integer;
   DrawFlags: Cardinal;
 begin
+  // Note: TOTAError.Start.Line is reported in the editor's visible line space,
+  // which matches Context.EditorLineNum (not LogicalLineNum) when regions are folded.
   if not FLineCache.TryGetValue(Context.EditorLineNum, ErrorData) then
     Exit;
 
