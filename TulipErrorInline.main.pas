@@ -357,6 +357,11 @@ begin
     begin
       GNotifier := TTulipErrorInline.Create;
       EventNotifierIndex := EditorServices.AddEditorEventsNotifier(GNotifier);
+      if EventNotifierIndex < 0 then
+      begin
+        GNotifier := nil;
+        EventNotifierIndex := -1;
+      end;
     end;
   end;
 end;
@@ -365,7 +370,7 @@ procedure Unregister;
 var
   EditorServices: INTACodeEditorServices;
 begin
-  if EventNotifierIndex <> -1 then
+  if EventNotifierIndex >= 0 then
   begin
     if Supports(BorlandIDEServices, INTACodeEditorServices, EditorServices) then
       EditorServices.RemoveEditorEventsNotifier(EventNotifierIndex);
