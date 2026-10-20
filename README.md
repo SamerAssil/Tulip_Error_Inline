@@ -1,4 +1,4 @@
-﻿# Tulip Error Inline for Delphi IDE
+# Tulip Error Inline for Delphi IDE
 
 للغة العربية انقر [هنا](#arabic-version) او انتقل لما بعد الجزء الانكليزي
 
@@ -52,6 +52,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 **SAMER ASSIL**
 * GitHub: [@SamerAssil](https://github.com/SamerAssil)
 
+## 🙏 Special Thanks
+Special thanks to **Ian Branch** ([@ijbranch](https://github.com/ijbranch)) for his detailed feedback, review, and valuable contributions to improving this plugin.
+
 
 
 <a id="arabic-version"></a>
@@ -74,11 +77,6 @@ https://github.com/user-attachments/assets/761ad6a3-c7a3-450f-af33-db22a8fad68d
 ## ⚙️ التوافق
 تم اختبار هذه الإضافة مع:
 * Delphi 12.0, 13.0, 13.1
-<<<<<<< HEAD
-
-=======
- 
->>>>>>> 8649f464c18132e3438477228b74b0949626471c
 من المفترض أن تعمل بشكل جيد على Delphi 11 .
 لا يمكن تشغيلها على Delphi 10.4 أو الإصدارات الأقدم.
 
@@ -113,3 +111,5 @@ https://github.com/user-attachments/assets/761ad6a3-c7a3-450f-af33-db22a8fad68d
 **سامر أصيل (SAMER ASSIL)**
 * جيت هاب (GitHub): [@SamerAssil](https://github.com/SamerAssil)
 
+## 🙏 شكر خاص
+شكر خاص للأخ **Ian Branch** ([@ijbranch](https://github.com/ijbranch)) على ملاحظاته القيمة وتقاريره التفصيلية ومساهماته في تحسين جودة واستقرار الإضافة.
