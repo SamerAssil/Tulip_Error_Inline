@@ -80,60 +80,8 @@ uses TulipErrorInline.consts;
 
 
 procedure TTulipErrorInlineFrame.LoadSettings;
-var
-  Reg: TRegistry;
 begin
-  // Errors
-  ErrorInfo.color := clred;
-  ErrorInfo.Enabled := True;
-  //Warning
-  WarningInfo.color := $004080FF;
-  WarningInfo.Enabled := true;
-  //Hint
-  HintInfo.Color := $00FF8000;
-  HintInfo.Enabled := true;
-
-  UpdateInterval := 1000;
-  ErrorIndent := 40;
-  ErrorAlign := eaLeft;
-
-  Reg := TRegistry.Create(KEY_READ);
-  try
-    Reg.RootKey := HKEY_CURRENT_USER;
-    if Reg.OpenKeyReadOnly(REG_KEY) then
-    begin
-      // Error
-      if Reg.ValueExists(FONT_COLOR_ERROR) then
-        ErrorInfo.Color := TColor(Reg.ReadInteger(FONT_COLOR_ERROR));
-      if Reg.ValueExists(ENABLED_ERROR) then
-        ErrorInfo.Enabled := Reg.ReadBool(ENABLED_ERROR);
-      // Warning
-      if Reg.ValueExists(FONT_COLOR_WARNING) then
-        WarningInfo.Color := TColor(Reg.ReadInteger(FONT_COLOR_WARNING));
-      if Reg.ValueExists(ENABLED_WARNING) then
-        WarningInfo.Enabled := Reg.ReadBool(ENABLED_WARNING);
-      // Hint
-      if Reg.ValueExists(FONT_COLOR_HINT) then
-        HintInfo.Color := TColor(Reg.ReadInteger(FONT_COLOR_HINT));
-      if Reg.ValueExists(ENABLED_HINT) then
-        HintInfo.Enabled := Reg.ReadBool(ENABLED_HINT);
-
-      // update interval
-      if Reg.ValueExists(UPDATE_INTERVAL) then
-        UpdateInterval := Reg.ReadInteger(UPDATE_INTERVAL);
-
-      if Reg.ValueExists(ERROR_ALIGN) then
-        ErrorAlign := TErrorMessageAlign( Reg.ReadInteger(ERROR_ALIGN) );
-
-      if Reg.ValueExists(ERROR_INDENT) then
-        ErrorIndent := Reg.ReadInteger(ERROR_INDENT);
-
-      Reg.CloseKey;
-
-    end;
-  finally
-    Reg.Free;
-  end;
+  TulipErrorInline.common.LoadSettings;
 end;
 
 procedure TTulipErrorInlineFrame.SaveSettings;
