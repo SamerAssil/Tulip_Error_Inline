@@ -168,6 +168,11 @@ begin
     TargetRect.Top := Rect.Top + (Rect.Height - TextH) div 2;
     TargetRect.Bottom := TargetRect.Top + TextH;
 
+    if TargetRect.Top < Rect.Top then
+      TargetRect.Top := Rect.Top;
+    if TargetRect.Bottom > Rect.Bottom then
+      TargetRect.Bottom := Rect.Bottom;
+
     if ErrorAlign = eaRight then
     begin
       TargetRect.Right := EditorWidth - Integer(ErrorIndent);
